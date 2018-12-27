@@ -13,6 +13,9 @@
     "type": "git",
     "url": "https://github.com/neutrino2211/parcel-plugin-dart"
   },
+  "peerDependencies": {
+    "parcel-bundler": "^1.11.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",

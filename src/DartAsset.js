@@ -3,10 +3,8 @@ const commandExists = require('command-exists');
 const childProcess = require('child_process');
 const {promisify} = require('@parcel/utils');
 const exec = promisify(childProcess.execFile);
-const fs = require('@parcel/fs');
-const Asset = require('parcel-bundler/lib/Asset');
-const tmpDir = require('os').tmpdir();
-const md5 = require('parcel-bundler/lib/utils/md5');
+const fs = require('fs')
+const Asset = require('parcel-bundler/lib/Asset'); // Require lib instead of src to support legacy node versions
 
 // Track installation status so we don't need to check more than once
 let dartInstalled = false;
@@ -29,32 +27,39 @@ class DartAsset extends Asset {
   }
 
   async generate() {
-    // Install confirm the existence of dart2js and dart
+    this._resolved_id = (Math.random()*1000000).toString(16) // Generate random hex as output id
+    var _resolved_name = this.basename+this._resolved_id+".js";
+
+    // Check if an output destination already exists and use it
+    // because we don't want to bloat the output by writing new files
+    fs.readdirSync(this.options.outDir).forEach((f)=>{
+      if(f.startsWith(this.basename) && f.endsWith(".js")){
+        _resolved_name = f;
+      }
+    })
+
+    // Confirm the existence of dart2js and dart
     await this.checkForDart();
-    const name = md5(this.name).slice(0, 8) + '.js';
-    this.jsPath = path.join(tmpDir, name);
+
     // Compile
+    this.jsPath = path.join(this.options.outDir, _resolved_name);
     let err = await this.dart2js();
     if (err) {
       throw new Error('DART: ' + err);
     }
-    var source = await fs.readFile(this.jsPath, 'utf-8');
-    var sourceMap,sourceMapPath=path.join(tmpDir, name + '.map');
-    if (this.options.sourceMaps) {
-      sourceMap = await fs.readFile(sourceMapPath, 'utf8');
 
-      sourceMap = JSON.parse(sourceMap);
-      // remove source map url
-      source = source.substring(0, source.lastIndexOf('//# sourceMappingURL'));
-      source += '//# sourceMappingURL=/' + name + '.map';
-      await fs.rimraf(sourceMapPath)
-    }
-    await fs.rimraf(this.jsPath)
+    // Proxy script to load dart2js output
+    // NB: This is not the best way to handle a dart asset because it bypasses the 'fscache'
+    let proxyJS = `
+      var _${this._resolved_id.replace(/\./g,"")}script = document.createElement('script');
+      _${this._resolved_id.replace(/\./g,"")}script.src = "./${_resolved_name}";
+      document.head.appendChild(_${this._resolved_id.replace(/\./g,"")}script);
+    `;
     return {
-      js: source,
-      "map": sourceMap
+      js: proxyJS
     };
   }
+
 
   async checkForDart() {
     if (dartInstalled) {

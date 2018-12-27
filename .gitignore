@@ -59,3 +59,8 @@ typings/
 
 # next.js build output
 .next
+
+# parcel-bundler cache and dist folders
+.cache/
+dist/
+lib/

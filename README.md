@@ -25,17 +25,17 @@ $ mkdir helloworld && cd helloworld
 ```
 then setup the dependencies with
 ```sh
-npm init && npm i parcel-plugin-dart -S
+$ npm init && npm i parcel-plugin-dart -S
 ```
 
 finally create the dart [web](https://webdev.dartlang.org) project
 
 ```sh
-stagehand web-simple
+$ stagehand web-simple
 ```
 
 #### Start development server
 
 ```sh
-parcel
+$ parcel serve web/index.html
 ```

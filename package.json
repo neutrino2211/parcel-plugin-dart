@@ -1,0 +1,22 @@
+{
+  "name": "parcel-plugin-dart",
+  "version": "0.0.1",
+  "description": "Parcel plugin for dartlang",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d lib"
+  },
+  "author": "Tsowa Mainasara Alamin",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3"
+  },
+  "dependencies": {
+    "@parcel/fs": "^1.11.0",
+    "@parcel/utils": "^1.11.0",
+    "parcel-bundler": "^1.11.0"
+  }
+}

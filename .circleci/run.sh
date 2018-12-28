@@ -4,6 +4,7 @@ if [ "$NODE" == "node" ]; then
   export NVM_DIR="${XDG_CONFIG_HOME/:-$HOME/.}nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
     nvm install --lts=carbon
+    nvm use default
 fi
 
 npm install parcel-bundler -g

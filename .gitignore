@@ -64,3 +64,4 @@ typings/
 .cache/
 dist/
 lib/
+build-node-pre-8

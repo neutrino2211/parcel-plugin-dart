@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout # check out the code in the project directory
       - run:
-          name: test
+          name: install_requirements
           command: >
             apt-get update &&
             apt-get install -y zip unzip wget xvfb &&
@@ -23,6 +23,9 @@ jobs:
             curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash &&
             export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" &&
             nvm install --lts=carbon &&
+      - run:
+          name: test
+          command: >
             cd $HOME/project &&
             npm i parcel-bundler -D &&
             Xvfb :99 -screen 0 1280x1024x24 & npm test

@@ -6,8 +6,8 @@ jobs:
     steps:
       - checkout # check out the code in the project directory
       - restore_cache:
-        keys:
-          - node-selenium-{{ checksum $HOME/project/package.lock.json }}
+          keys:
+            - node-selenium-{{ checksum $HOME/project/package.lock.json }}
       - run:
           name: install_test_reqs
           command: >

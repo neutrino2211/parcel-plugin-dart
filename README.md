@@ -39,3 +39,7 @@ $ stagehand web-simple
 ```sh
 $ parcel serve web/index.html
 ```
+
+# Testing powered by
+<img src="./assets/Browserstack-logo.svg"
+    href="http://www.browserstack.com" />

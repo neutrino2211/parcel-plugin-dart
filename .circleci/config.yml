@@ -5,4 +5,4 @@ jobs:
      - image: google/dart:2.0.0
     steps:
       - checkout # check out the code in the project directory
-      - run: "sudo chmod +x .circleci/run.sh&&bash .circleci/run.sh" # run the all tests
+      - run: "chmod +x .circleci/run.sh&&bash .circleci/run.sh" # run the all tests

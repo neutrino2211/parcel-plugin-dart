@@ -5,12 +5,12 @@ jobs:
      - image: google/dart:2.0.0
     steps:
       - checkout # check out the code in the project directory
+      - restore_cache:
+        keys:
+          - node-selenium-{{ checksum $HOME/project/package.lock.json }}
       - run:
-          name: install_requirements
+          name: install_test_reqs
           command: >
-            apt-get update &&
-            apt-get install -y xvfb &&
-            Xvfb :99 -screen 0 1280x1024x24 &
             apt-get install -y zip unzip wget  &&
             wget https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip &&
             unzip chromedriver_linux64.zip &&
@@ -24,7 +24,20 @@ jobs:
             apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* &&
             curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash &&
             export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" &&
-            nvm install --lts=carbon &&
+            nvm install --lts=carbon
+
+      - save_cache:
+        key: node-selenium-{{ checksum $HOME/project/package.lock.json }}
+        paths:
+          - /usr/bin
+          - $HOME/.nvm
+
+      - run:
+          name: install_xvfb
+          command: >
+            apt-get update &&
+            apt-get install -y xvfb &&
+            Xvfb :99 -screen 0 1280x1024x24 &
             cd $HOME/project &&
             npm i parcel-bundler -D &&
             npm test

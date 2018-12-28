@@ -7,7 +7,7 @@ jobs:
       - checkout # check out the code in the project directory
       - restore_cache:
           keys:
-            - node-selenium-{{ checksum "$HOME/project/package.lock.json" }}
+            - node-selenium-{{ checksum "package-lock.json" }}
       - run:
           name: install_test_reqs
           command: >
@@ -28,7 +28,7 @@ jobs:
             nvm install --lts=carbon
 
       - save_cache:
-          key: node-selenium-{{ checksum "$HOME/project/package.lock.json" }}
+          key: node-selenium-{{ checksum "package-lock.json" }}
           paths:
             - /usr/bin
             - $HOME/.nvm

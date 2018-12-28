@@ -25,4 +25,4 @@ jobs:
             nvm install --lts=carbon &&
             cd $HOME/project &&
             npm i parcel-bundler -D &&
-            xvfb :99 -screen 0 1280x1024x24 & npm test
+            Xvfb :99 -screen 0 1280x1024x24 & npm test

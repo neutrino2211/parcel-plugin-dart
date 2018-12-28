@@ -11,6 +11,7 @@ jobs:
       - run:
           name: install_test_reqs
           command: >
+            apt-get update &&
             apt-get install -y zip unzip wget  &&
             wget https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip &&
             unzip chromedriver_linux64.zip &&
@@ -27,7 +28,7 @@ jobs:
             nvm install --lts=carbon
 
       - save_cache:
-          key: node-selenium-{{ checksum $HOME/project/package.lock.json }}
+          key: node-selenium-{{ checksum "$HOME/project/package.lock.json" }}
           paths:
             - /usr/bin
             - $HOME/.nvm

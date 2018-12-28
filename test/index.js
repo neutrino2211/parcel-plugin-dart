@@ -19,7 +19,7 @@ describe("Basic project page",function(){
 
     describe("Node < 8",()=>{
         it("should have #output text as 'Your Dart app is running.'",async()=>{
-            await driver.get(uriNode8);
+            await driver.get(uriNodePre8);
             var text = await driver.findElement(By.id("output")).getText();
             assert.deepEqual(text,"Your Dart app is running.")
         })

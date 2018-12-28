@@ -9,7 +9,7 @@ jobs:
           name: test
           command: >
             apt-get update &&
-            apt-get install -y zip unzip wget &&
+            apt-get install -y zip unzip wget xvfb &&
             wget https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip &&
             unzip chromedriver_linux64.zip &&
             mv chromedriver /usr/bin/chromedriver &&
@@ -25,4 +25,4 @@ jobs:
             nvm install --lts=carbon &&
             cd $HOME/project &&
             npm i parcel-bundler -D &&
-            npm test
+            xvfb :99 -screen 0 1280x1024x24 & npm test

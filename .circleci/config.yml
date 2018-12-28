@@ -27,10 +27,10 @@ jobs:
             nvm install --lts=carbon
 
       - save_cache:
-        key: node-selenium-{{ checksum $HOME/project/package.lock.json }}
-        paths:
-          - /usr/bin
-          - $HOME/.nvm
+          key: node-selenium-{{ checksum $HOME/project/package.lock.json }}
+          paths:
+            - /usr/bin
+            - $HOME/.nvm
 
       - run:
           name: install_xvfb

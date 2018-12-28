@@ -8,6 +8,7 @@ jobs:
       - run:
           name: install_chromedriver
           command: >
+            apt-get update &&
             apt-get install zip unzip &&
             wget https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip &&
             unzip chromedriver_linux64.zip &&

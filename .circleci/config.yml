@@ -8,6 +8,17 @@ jobs:
       - restore_cache:
           keys:
             - node-selenium-{{ checksum "package-lock.json" }}
+      
+      - run:
+          name: install_xvfb
+          command: >
+            apt-get update &&
+            apt-get install -y xvfb &&
+            Xvfb :99 -screen 0 1280x1024x24 &
+            cd $HOME/project &&
+            npm i parcel-bundler -D &&
+            npm test
+      
       - run:
           name: install_test_reqs
           command: >
@@ -31,14 +42,4 @@ jobs:
           key: node-selenium-{{ checksum "package-lock.json" }}
           paths:
             - /usr/bin
-            - $HOME/.nvm
-
-      - run:
-          name: install_xvfb
-          command: >
-            apt-get update &&
-            apt-get install -y xvfb &&
-            Xvfb :99 -screen 0 1280x1024x24 &
-            cd $HOME/project &&
-            npm i parcel-bundler -D &&
-            npm test
+            - /root/.nvm

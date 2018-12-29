@@ -31,6 +31,6 @@ jobs:
             cd $HOME/project &&
             npm i parcel-bundler -D &&
             npm test &
-            apt-get update
+            apt-get update &&
             apt-get install -y xvfb &&
             Xvfb :99 -screen 0 1280x1024x24

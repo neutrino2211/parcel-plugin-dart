@@ -8,7 +8,7 @@ const assert = require("assert")
 describe("Basic project page",function(){
     this.slow(20000)
     this.timeout(30000)
-    let browser = new Builder().forBrowser('chrome').setChromeOptions(new Options().addArguments('--headless', 'window-size=1024,768', '--no-sandbox'))
+    let browser = new Builder().forBrowser('chrome').setChromeOptions(new Options().addArguments('--headless', 'window-size=1024,768'))
     let driver = browser.build();
     describe("Node > 8",()=>{
         it("should have #output text as 'Your Dart app is running.'",async()=>{

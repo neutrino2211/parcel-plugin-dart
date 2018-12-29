@@ -11,7 +11,7 @@ jobs:
             apt-get install -y google-chrome-stable build-essential jq git openssh-server &&
             apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* &&
             apt-get install -y zip unzip wget &&
-            apt-get install -y xvfb &&
+            apt-get install -y xvfb
       - run:
           command: >
             Xvfb :99 -screen 0 1280x1024x24

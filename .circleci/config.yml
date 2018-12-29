@@ -5,15 +5,14 @@ jobs:
      - image: google/dart:2.0.0
     steps:
       - checkout # check out the code in the project directory
+      - run: apt-get update
       - run:
           command: >
-            apt-get update &&
             apt-get install -y xvfb &&
             Xvfb :99 -screen 0 1280x1024x24
           background: true
       - run:
           command: >
-            apt-get update &&
             apt-get install -y zip unzip wget &&
             wget https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip &&
             unzip chromedriver_linux64.zip &&

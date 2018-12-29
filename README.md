@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/neutrino2211/parcel-plugin-dart/tree/master.svg?style=svg)](https://circleci.com/gh/neutrino2211/parcel-plugin-dart/tree/master)
+
 # parcel-plugin-dart
 Parcel plugin for [dart](https://dartlang.org)
 

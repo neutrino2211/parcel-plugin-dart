@@ -5,12 +5,13 @@ jobs:
      - image: google/dart:2.0.0
     steps:
       - checkout # check out the code in the project directory
-      - restore_cache:
-          keys:
-            - node-selenium-npm-{{ checksum "package-lock.json" }}
-      
       - run:
-          name: install_test_reqs
+          command: >
+            apt-get update &&
+            apt-get install -y xvfb &&
+            Xvfb :99 -screen 0 1280x1024x24
+          background: true
+      - run:
           command: >
             apt-get update &&
             apt-get install -y zip unzip wget &&
@@ -30,7 +31,5 @@ jobs:
             apt-get update &&
             cd $HOME/project &&
             npm i parcel-bundler -D &&
-            npm test &
-            apt-get update &&
-            apt-get install -y xvfb &&
-            Xvfb :99 -screen 0 1280x1024x24
+            npm test
+            

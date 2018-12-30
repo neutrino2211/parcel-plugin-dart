@@ -3,14 +3,16 @@
 # parcel-plugin-dart
 Parcel plugin for [dart](https://dartlang.org)
 
+## NOTE
+This plugin only works with the [dart-sdk](https://www.dartlang.org/install)
+Imports via the `package:` scheme don't work but `dart:` imports work fine
+
 ## Installation
 
 ```sh
 $ npm install parcel-plugin-dart -S
 ```
 ## Setup
-
-NB: This plugin only works with the [dart-sdk](https://www.dartlang.org/install)
 
 #### Get `stagehand`
 First get `stagehand` by running

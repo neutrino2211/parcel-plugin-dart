@@ -6,8 +6,8 @@
   "scripts": {
     "posttest": "node test/cleanup.js",
     "pretest": "set PARCEL-PLUGIN-DART-LEGACY=false && parcel build -d test/basic/build --no-cache --public-url ./ test/basic/web/index.html && npm run pretest-stage2",
-    "pretest-stage2": "set PARCEL-PLUGIN-DART-LEGACY=true && parcel build -d test/basic/build-node-pre-8 --no-cache --public-url ./ test/basic/web/index.html",
-    "test": "mocha test/index.js",
+    "pretest-stage2": "set PARCEL-PLUGIN-DART-LEGACY=true && parcel build -d test/basic/build-node-pre-8 --no-cache --public-url ./ test/basic/web/index.html && npm run build",
+    "test": "mocha test/spec/*.js",
     "build": "babel src -d lib"
   },
   "author": "Tsowa Mainasara Alamin",
@@ -31,6 +31,8 @@
   },
   "dependencies": {
     "@parcel/fs": "^1.11.0",
-    "@parcel/utils": "^1.11.0"
+    "@parcel/utils": "^1.11.0",
+    "recursive-readdir": "^2.2.2",
+    "yaml": "^1.1.0"
   }
 }

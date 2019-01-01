@@ -5,9 +5,15 @@ const {promisify} = require('@parcel/utils');
 const exec = promisify(childProcess.execFile);
 const fs = require('fs')
 const Asset = require('parcel-bundler/lib/Asset'); // Require lib instead of src to support legacy node versions
+const compiler = require("./compiler");
 
 // Track installation status so we don't need to check more than once
 let dartInstalled = false;
+
+function mkdir(dir){
+  if(fs.existsSync(dir)) return;
+  return fs.mkdirSync(dir)
+}
 
 class DartAsset extends Asset {
   constructor(name, options) {
@@ -28,7 +34,6 @@ class DartAsset extends Asset {
 
   async generate() {
     this._resolved_id = (Math.random()*1000000).toString(16) // Generate random hex as output id
-    var _resolved_name = this.basename+this._resolved_id+".js";
 
     // Check if an output destination already exists and use it
     // because we don't want to bloat the output by writing new files
@@ -42,19 +47,32 @@ class DartAsset extends Asset {
     await this.checkForDart();
 
     // Compile
-    this.jsPath = path.join(this.options.outDir, _resolved_name);
-    let err = await this.dart2js();
+    let err = await compiler.compile();
     if (err) {
       throw new Error('DART: ' + err);
     }
-
-    // Proxy script to load dart2js output
+    const build = await compiler.getRelevantFiles(process.cwd(), this.basename);
+    await compiler.clearBuildPath();
+    // Proxy script to load build_runner output
     // NB: This is not the best way to handle a dart asset because it bypasses the 'fscache'
     let proxyJS = `
       var _${this._resolved_id.replace(/\./g,"")}script = document.createElement('script');
-      _${this._resolved_id.replace(/\./g,"")}script.src = "./${_resolved_name}";
+      _${this._resolved_id.replace(/\./g,"")}script.src = "./${build.project[0]}";
       document.head.appendChild(_${this._resolved_id.replace(/\./g,"")}script);
     `;
+
+    // Create package paths
+    mkdir(path.join(this.options.outDir,"packages"))
+    Object.getOwnPropertyNames(compiler.resolver.getPubspec(process.cwd())["dependencies"] || {}).forEach((dep)=>{
+      mkdir(path.join(this.options.outDir,"packages",dep))
+    })
+    build.project.forEach((file)=>{
+      fs.copyFileSync(path.join(compiler.buildPath,file), path.join(this.options.outDir,file))
+    })
+    build.dependencies.forEach((file)=>{
+      fs.copyFileSync(path.join(compiler.buildPath,file), path.join(this.options.outDir,file))
+    })
+
     return {
       js: proxyJS
     };
@@ -87,28 +105,6 @@ class DartAsset extends Asset {
     }
 
     dartInstalled = true;
-  }
-
-  async doCompile() {
-    return new Promise((res, rej) => {
-      childProcess.exec(
-        'dart2js ' + ['-o', this.jsPath, this.name].join(' '),
-        (err, stdout, stderr) => {
-          if (err) {
-            rej(err);
-          } else {
-            res([stdout, stderr]);
-          }
-        }
-      );
-    });
-  }
-
-  async dart2js() {
-    let [stdout, stderr] = await this.doCompile();
-    if (stdout == '' && stderr != '') {
-      return stderr;
-    }
   }
 }
 
